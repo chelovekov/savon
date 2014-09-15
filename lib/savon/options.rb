@@ -55,6 +55,7 @@ module Savon
         :strip_namespaces          => true,
         :convert_response_tags_to  => lambda { |tag| tag.snakecase.to_sym},
         :multipart                 => false,
+        :raw_response              => false
       }
 
       options = defaults.merge(options)
@@ -256,6 +257,10 @@ module Savon
     # Instruct Savon to create a multipart response if available.
     def multipart(multipart)
       @options[:multipart] = multipart
+    end
+
+    def raw_response(raw_response)
+      @options[:raw_response] = raw_response
     end
   end
 

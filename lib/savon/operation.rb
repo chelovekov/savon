@@ -50,6 +50,8 @@ module Savon
       response = Savon.notify_observers(@name, builder, @globals, @locals)
       response ||= call_with_logging build_request(builder)
 
+      return response if @globals[:raw_response]
+
       raise_expected_httpi_response! unless response.kind_of?(HTTPI::Response)
 
       create_response(response)

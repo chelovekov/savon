@@ -590,6 +590,20 @@ describe "Options" do
     end
   end
 
+  context "global :raw_response" do
+    it "return HTTPI::Response instead Savon::Response" do
+      client = new_client(
+        :endpoint => @server.url(:repeat),
+        :convert_response_tags_to => lambda { |tag| tag.snakecase },
+        :raw_response => true
+      )
+
+      response = client.call(:authenticate, :xml => Fixture.response(:authentication))
+
+      expect(response).to be_a(HTTPI::Response)
+    end
+  end
+
   context "global and request :soap_header" do
     it "merges the headers if both were provided as Hashes" do
       global_soap_header = {
