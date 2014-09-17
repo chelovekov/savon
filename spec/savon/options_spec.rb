@@ -590,17 +590,25 @@ describe "Options" do
     end
   end
 
-  context "global :raw_response" do
+  context "global :response_class" do
+    class CustomResponse
+      def initialize(response, globals, locals)
+        @response = response
+        @globals = globals
+        @locals = locals
+      end
+    end
+
     it "return HTTPI::Response instead Savon::Response" do
       client = new_client(
         :endpoint => @server.url(:repeat),
         :convert_response_tags_to => lambda { |tag| tag.snakecase },
-        :raw_response => true
+        :response_class => CustomResponse
       )
 
       response = client.call(:authenticate, :xml => Fixture.response(:authentication))
 
-      expect(response).to be_a(HTTPI::Response)
+      expect(response).to be_a(CustomResponse)
     end
   end
 
